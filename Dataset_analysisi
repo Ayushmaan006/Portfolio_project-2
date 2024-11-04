@@ -1,0 +1,83 @@
+select * from corona_data
+where Province is null or `Country/Region` is null or Latitude is null or Longitude is null 
+or `date` is null or Confirmed is null or Deaths is null or Recovered is null; 
+-- check null field
+/*UPDATE corona_data
+SET Recovered=0
+WHERE Recorvered IS NULL; */
+
+-- Total Number of rows 
+select count(*) as Total_rows 
+from corona_data;
+
+-- Date 
+UPDATE corona_data 
+SET 
+`Date` = STR_TO_DATE(`Date`, '%Y-%m-%d');
+ALTER TABLE corona_data
+MODIFY COLUMN `Date` DATE;
+
+
+
+-- start_date and end_date
+SELECT 
+MIN(`Date`) AS start_date, MAX(`Date`) AS end_date
+FROM
+corona_data;
+
+-- Number of Months 
+select count(distinct(substr(`Date`,1,7))) as Total_months
+from corona_data;
+
+-- Monthly average for confirmed, deaths, recovered
+select substr(`date`,1,7) as `Month`, round(avg(confirmed),2) as Avg_confirmed,round(avg(deaths),2) as Avg_deaths,round(avg(recovered),2) as Avg_recovered
+from corona_data
+group by `Month`
+order by `Month` desc;
+
+-- Minimum values for confirmed, deaths, recovered per year
+select Year(`Date`) as Year, min(confirmed) as Min_confirmed, min(deaths) as Min_deaths, min(recovered) as Min_recovered
+from corona_data
+where Confirmed != 0 and deaths != 0 and recovered != 0 
+group by `Year`
+order by `Year` desc ;
+
+-- Maximum Values for confirmed, deaths , recovered per month
+select substr(`date`,1,7) as `Month`, max(confirmed) as Max_confirmed, max(deaths) as Max_deaths, max(recovered) as Max_recovered
+from corona_data
+where Confirmed != 0 and deaths != 0 and recovered != 0 
+group by `Month`
+order by `Month`;
+
+-- Total number of case of confirmed, deaths, recovered each month
+select substr(`date`,1,7) as `Month`, sum(confirmed) as Total_confirmed, sum(deaths) as Total_Deaths, sum(recovered) as Total_recovered
+from corona_data
+group by `Month`
+order by `Month`;
+
+-- Corona virus spread out with respect to confirmed case
+select sum(confirmed) as Total_confirmed_cases, round(avg(confirmed),2) as Avg_confirmed_cases,round(variance(confirmed),2) as Variance_confirmed_cases, round(stddev(confirmed),2) as Std_dev_confirmed
+from corona_data;
+
+-- Corona virus spread out with respect to death case per month
+ SELECT 
+    SUBSTR(`Date`, 1, 7) `MONTH`,
+    SUM(Deaths) AS Total_Death_Cases,
+    ROUND(AVG(Deaths), 3) AS Average_Death_Cases,
+    ROUND(VARIANCE(Deaths), 3) AS Variance_Death_Cases,
+    ROUND(STDDEV(Deaths), 3) AS Std_Dev_Death_Cases
+FROM
+    corona_data
+GROUP BY `MONTH`;
+
+-- how corona virus spread out with respect to recovered case
+SELECT 
+    SUM(Recovered) AS Total_Recovered_Cases,
+    ROUND(AVG(Recovered), 3) AS Average_Recovered_Cases,
+    ROUND(VARIANCE(Recovered), 3) AS Variance_Recovered_Cases,
+    ROUND(STDDEV(Recovered), 3) AS Std_Dev_Recovered_Cases
+FROM
+    corona_data;
+    
+-- Country Having Highest number of confirmed cases 
+
