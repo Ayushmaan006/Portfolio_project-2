@@ -80,4 +80,27 @@ FROM
     corona_data;
     
 -- Country Having Highest number of confirmed cases 
+with Total_confirmed_tab as( 
+select `Country/Region` as Country, sum(confirmed) as Total_confirmed
+from corona_data
+group by `Country/Region`)
+select country , Total_confirmed , rank() over(order by Total_confirmed desc) as Ranks 
+from total_confirmed_tab;
 
+-- Country having lowest number of the death case
+with Total_death_tab as( 
+select `Country/Region` as Country, sum(deaths) as Total_deaths
+from corona_data
+group by `Country/Region`)
+select country , Total_deaths , rank() over(order by Total_deaths asc) as Ranks 
+from total_death_tab
+where Total_deaths != 0;
+
+-- countries having the highest recovered case
+with Total_recovered_tab as( 
+select `Country/Region` as Country, sum(Recovered) as Total_recovered
+from corona_data
+group by `Country/Region`)
+select country , Total_recovered , rank() over(order by Total_recovered desc) as Ranks 
+from total_recovered_tab
+where Total_recovered != 0;
