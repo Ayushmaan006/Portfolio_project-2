@@ -7,8 +7,8 @@ This project focuses on cleaning and exploring a dataset related to the COVID-19
 The aim is to take raw COVID-19 data and transform it into a structured format suitable for analysis, followed by key insights using exploratory data analysis (EDA) techniques.
 
 Objectives
-*Clean and preprocess the raw dataset by handling missing values, duplicates, and formatting issues.
-*Perform exploratory data analysis (EDA) to uncover patterns, trends, and relationships within the data.
+-Clean and preprocess the raw dataset by handling missing values, duplicates, and formatting issues.
+-Perform exploratory data analysis (EDA) to uncover patterns, trends, and relationships within the data.
 Visualize key insights using Python libraries such as Matplotlib and Seaborn.
 Tools & Libraries Used
 Python: Primary programming language used in the project.
